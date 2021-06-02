@@ -2,23 +2,6 @@ import math
 import unittest
 import random
 
-def wallis(n):
-    ans = 1
-    for i in range(1, n+1):
-        ans = ans*(4*i*i)/(4*i*i-1)
-    return ans*2
-
-def monte_carlo(n):
-    count = 0
-    for i in range(1, n+1):
-        x = random.random()
-        y = random.random()
-        distance = x*x + y*y
-        if distance <= 1.000000000:
-            count +=1
-    pi = 4*count/n
-    return pi
-
 class TestWallis(unittest.TestCase):
     def test_low_iters(self):
         for i in range(0, 5):
@@ -30,8 +13,7 @@ class TestWallis(unittest.TestCase):
             pi = wallis(i)
             self.assertTrue(abs(pi - math.pi) < 0.01, msg=f"Estimate with even {i} iterations is {pi} which is not accurate enough.\n")
 
-            
-           
+
 class TestMC(unittest.TestCase):
     def test_randomness(self):
         pi0 = monte_carlo(15000)
@@ -46,5 +28,31 @@ class TestMC(unittest.TestCase):
             pi = monte_carlo(i)
             self.assertTrue(abs(pi - math.pi) < 0.4, msg=f"Estimate with even {i} iterations is {pi} which is not accurate enough.\n")
         
+    
 if __name__ == "__main__":
     unittest.main()
+    
+    
+def wallis(value):
+	pi=1
+	for i in range (1,value+1):
+		pi=pi*4*i*i/((4*i*i)-1)	
+	return 2*pi
+
+def is_inside(x,y):
+	distance=math.sqrt(math.pow(x,2)+math.pow(y,2))
+	if 1>distance:
+		return True
+	else:
+		return False
+	
+def monte_carlo(value):
+	inside1=0
+	random.seed()
+	for i in range(value):
+		x=random.random()
+		y=random.random()
+		isinside=is_inside(x,y)
+		if isinside==True: 
+			inside1=inside1+1
+	return 4*inside1/value
